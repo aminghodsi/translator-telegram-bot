@@ -10,15 +10,23 @@ import uuid
 import os
 import json
 from pathlib import Path
+from dotenv import load_dotenv
 
 model = WhisperModel("tiny", device="cpu", compute_type="int8")
 
+load_dotenv()
 
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+PROXY_URL = os.getenv("PROXY_URL")
 
-my_token = "..."
+if PROXY_URL:
+    session = AiohttpSession(proxy=PROXY_URL)
+    bot = Bot(token=BOT_TOKEN, session=session)
+else:
+    bot = Bot(token=BOT_TOKEN)
 
-bot = Bot(token=my_token)
 dp = Dispatcher()
+
 
 
 language_options = {
